@@ -30,6 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.yardButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -49,12 +50,23 @@
             this.label2.TabIndex = 1;
             this.label2.Text = "label2";
             // 
+            // yardButton
+            // 
+            this.yardButton.Location = new System.Drawing.Point(697, 495);
+            this.yardButton.Name = "yardButton";
+            this.yardButton.Size = new System.Drawing.Size(75, 23);
+            this.yardButton.TabIndex = 2;
+            this.yardButton.Text = "Yard";
+            this.yardButton.UseVisualStyleBackColor = true;
+            this.yardButton.Click += new System.EventHandler(this.yardButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGreen;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.yardButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.DoubleBuffered = true;
@@ -71,6 +83,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button yardButton;
     }
 }
 

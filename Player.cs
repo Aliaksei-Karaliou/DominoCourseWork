@@ -24,7 +24,7 @@ namespace DominoCourseWork
                     pbox.Location = new System.Drawing.Point(20, height);
                 else pbox.Location = new System.Drawing.Point(Domino.Size.Width + PictureBoxList[i - 1].Location.X + 20, height);
                 ImageRotator rotator = new ImageRotator();
-                pbox.Image = rotator.CounterClockWise(List[i].Image());
+                pbox.Image = rotator.CounterClockWise(List[i].Image);
                 PictureBoxList.Add(pbox);
            }
         }
@@ -36,6 +36,9 @@ namespace DominoCourseWork
         {
             Domino result = UsedDomino.RandomFree();
             List.Add(result);
+            System.Windows.Forms.PictureBox box = new System.Windows.Forms.PictureBox();
+            box.Image = result.Image;
+            PictureBoxList.Add(box);           
             return result;
         }
         public int DominoCount { get { return List.Count; } }

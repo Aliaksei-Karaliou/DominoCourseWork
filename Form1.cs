@@ -34,8 +34,8 @@ namespace DominoCourseWork
             Domino domino = new Domino(pbox.Image);
             if (domino.Contains(Right) || domino.Contains(Left) || Right == 7)
             {
-                player2.PictureBoxList.Remove(pbox);
-                player2.List.Remove(domino);
+                player1.PictureBoxList.Remove(pbox);
+                player1.List.Remove(domino);
                 (this as Form).Text = domino.ToString();
                 pbox.Click -= PictureBox_Click;
                 if (Right == 7)
@@ -46,7 +46,7 @@ namespace DominoCourseWork
                     leftMove(domino, pbox);           
             }
             PCMove();
-            //PullTogether();
+            PullTogether();
         }
 
         private void PCMove()
@@ -56,7 +56,7 @@ namespace DominoCourseWork
             {
                 if (player2.List[i].Contains(Right))
                 {
-                    player2.PictureBoxList[i].Image = rotator.CounterClockWise(player2.List[i].Image());
+                    player2.PictureBoxList[i].Image = rotator.CounterClockWise(player2.List[i].Image);
                     rightMove(player2.List[i], player2.PictureBoxList[i]);
                     player2.PictureBoxList.RemoveAt(i);
                     player2.List.RemoveAt(i);
@@ -64,14 +64,21 @@ namespace DominoCourseWork
                 }
                 else if (player2.List[i].Contains(Left))
                 {
-                    player2.PictureBoxList[i].Image = rotator.CounterClockWise(player2.List[i].Image());
+                    player2.PictureBoxList[i].Image = rotator.CounterClockWise(player2.List[i].Image);
                     leftMove(player2.List[i], player2.PictureBoxList[i]);
                     player2.PictureBoxList.RemoveAt(i);
                     player2.List.RemoveAt(i);
                     break;
                 }
             }
-           // PullTogether();
+            PullTogether();
+        }
+
+        private void yardButton_Click(object sender, EventArgs e)
+        {
+           /* PictureBox pbox = new PictureBox();
+            pbox.Image = player1.GiveFromTheYard().Image;
+            pbox.Location = new Point();*/
         }
 
         private void firstMove(Domino domino, PictureBox pbox)
@@ -169,11 +176,11 @@ namespace DominoCourseWork
                 }
                 pbox.Size = pbox.Image.Size;
             }
-            else if (leftPoint.X < 300 && upCount <= 2)
+            else if (leftPoint.X < 300 && upCount <= 2 && upCount > 0)
             {
                 //vertLY -= 3;
                 pbox.Location = new Point(domino.First == domino.Second ? leftPoint.X - 25 : leftPoint.X, vertLY);
-                leftPoint = new Point(leftPoint.X - 22, leftPoint.Y - 3);
+                leftPoint = new Point(leftPoint.X, leftPoint.Y - 3);
                 if (domino.First == domino.Second)
                     pbox.Location = new Point(pbox.Location.X, pbox.Location.Y - 11);
             }
@@ -182,7 +189,7 @@ namespace DominoCourseWork
                 ImageRotator rotator = new ImageRotator();
                 pbox.Image = rotator.HalfCircle(pbox.Image);
                 pbox.Location = leftPoint;
-                leftPoint = new Point(leftPoint.X + pbox.Width + 3, vertLY);
+                leftPoint = new Point(leftPoint.X + pbox.Width + 3, vertLY - 22);
               /*  if (domino.First == domino.Second)
                     pbox.Location = new Point(pbox.Location.X, pbox.Location.Y - 11);*/
             }
@@ -218,23 +225,17 @@ namespace DominoCourseWork
         }
         private void PullTogether()
         {
-            ImageRotator rotator = new ImageRotator();
-            int x1 = 20, x2 = x1;
-            for (int i = 0; i < player1.DominoCount; i++)
+            if (player1.PictureBoxList.Count > 0)
             {
-                player1.PictureBoxList[i].Image = rotator.CounterClockWise(player1.List[i].Image());
-                PictureBox pbox = player1.PictureBoxList[i];
-                if (i == 0)
-                    pbox.Location = new Point(20, 486);
-                else pbox.Location = new Point(Domino.Size.Width + player1.PictureBoxList[i - 1].Location.X + 20, 486);
+                player1.PictureBoxList[0].Location = new Point(20, 486);
+                for (int i = 1; i < player1.PictureBoxList.Count; i++)
+                    player1.PictureBoxList[i].Location = new Point(player1.PictureBoxList[i - 1].Location.X + 42, 486);                  
             }
-            for (int i = 0; i < player2.DominoCount; i++)
+            if (player2.PictureBoxList.Count > 0)
             {
-                player2.PictureBoxList[i].Image = rotator.CounterClockWise(player2.List[i].Image());
-                PictureBox pbox = player2.PictureBoxList[i];
-                if (i == 0)
-                    pbox.Location = new Point(20, 20);
-                else pbox.Location = new Point(Domino.Size.Width + player1.PictureBoxList[i - 1].Location.X + 20, 20);
+                player2.PictureBoxList[0].Location = new Point(20, 20);
+                for (int i = 1; i < player2.PictureBoxList.Count; i++)
+                    player2.PictureBoxList[i].Location = new Point(player2.PictureBoxList[i - 1].Location.X + 42, 20);
             }
         }
     }

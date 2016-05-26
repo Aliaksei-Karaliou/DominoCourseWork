@@ -113,23 +113,26 @@ namespace DominoCourseWork
         {
             return new Domino(First, Second);
         }
-        public Image Image()
+        public Image Image
         {
-            Image[] images = new Image[] { Properties.Resources.domino0, Properties.Resources.domino1, Properties.Resources.domino2, Properties.Resources.domino3, Properties.Resources.domino4, Properties.Resources.domino5, Properties.Resources.domino6 };
-            Bitmap image1 = new Bitmap(images[First], new Size(Size.Height / 2, Size.Height / 2));
-            Bitmap image2 = new Bitmap(images[Second], new Size(Size.Height / 2, Size.Height / 2));
-            Bitmap result = new Bitmap(Size.Height, Size.Height / 2);
-            int half = result.Width / 2;
-            for (int i = 0; i < result.Height; i++)
-                for (int j = 0; j < result.Width; j++)
-                {
-                    Color pixel = new Color();
-                    if (j < half) pixel = image1.GetPixel(j, i);
-                    else if (j > half) pixel = image2.GetPixel(j - half, i);
-                    else pixel = Color.White;
-                    result.SetPixel(j, i, pixel);
-                }
-            return result;
+            get
+            {
+                Image[] images = new Image[] { Properties.Resources.domino0, Properties.Resources.domino1, Properties.Resources.domino2, Properties.Resources.domino3, Properties.Resources.domino4, Properties.Resources.domino5, Properties.Resources.domino6 };
+                Bitmap image1 = new Bitmap(images[First], new Size(Size.Height / 2, Size.Height / 2));
+                Bitmap image2 = new Bitmap(images[Second], new Size(Size.Height / 2, Size.Height / 2));
+                Bitmap result = new Bitmap(Size.Height, Size.Height / 2);
+                int half = result.Width / 2;
+                for (int i = 0; i < result.Height; i++)
+                    for (int j = 0; j < result.Width; j++)
+                    {
+                        Color pixel = new Color();
+                        if (j < half) pixel = image1.GetPixel(j, i);
+                        else if (j > half) pixel = image2.GetPixel(j - half, i);
+                        else pixel = Color.White;
+                        result.SetPixel(j, i, pixel);
+                    }
+                return result;
+            }
         }
         public override string ToString()
         {
