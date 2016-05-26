@@ -46,12 +46,13 @@ namespace DominoCourseWork
                     leftMove(domino, pbox);           
             }
             PCMove();
-            PullTogether();
+            PullTogether(player1, 486);
         }
 
         private void PCMove()
         {
             ImageRotator rotator = new ImageRotator();
+            bool move = false;
             for (int i = 0; i < player2.List.Count; i++)
             {
                 if (player2.List[i].Contains(Right))
@@ -60,6 +61,7 @@ namespace DominoCourseWork
                     rightMove(player2.List[i], player2.PictureBoxList[i]);
                     player2.PictureBoxList.RemoveAt(i);
                     player2.List.RemoveAt(i);
+                    move = true;
                     break;
                 }
                 else if (player2.List[i].Contains(Left))
@@ -68,19 +70,35 @@ namespace DominoCourseWork
                     leftMove(player2.List[i], player2.PictureBoxList[i]);
                     player2.PictureBoxList.RemoveAt(i);
                     player2.List.RemoveAt(i);
+                    move = true;
                     break;
                 }
             }
-            PullTogether();
+            if (!move)
+                MessageBox.Show("Не могу походить");
+            PullTogether(player2, 20);
         }
 
         private void yardButton_Click(object sender, EventArgs e)
         {
-           /* PictureBox pbox = new PictureBox();
-            pbox.Image = player1.GiveFromTheYard().Image;
-            pbox.Location = new Point();*/
+            Yard(player1, 486);
         }
-
+        private void Yard (Player player, int locY)
+        {
+            if (UsedDomino.Free > 0)
+            {
+                ImageRotator rotator = new ImageRotator();
+                player.GiveFromTheYard();
+                Controls.Add(player.PictureBoxList[player.PictureBoxList.Count - 1]);
+                player.PictureBoxList[player.PictureBoxList.Count - 1].Size = Domino.Size;
+                player.PictureBoxList[player.PictureBoxList.Count - 1].Click += PictureBox_Click;
+                player.PictureBoxList[player.PictureBoxList.Count - 1].MouseHover += hover;
+                player.PictureBoxList[player.PictureBoxList.Count - 1].SizeMode = PictureBoxSizeMode.Zoom;
+                player.PictureBoxList[player.PictureBoxList.Count - 1].Image = rotator.ClockWise(player.PictureBoxList[player.PictureBoxList.Count - 1].Image);
+                PullTogether(player, locY);
+            }
+            else MessageBox.Show("There is no dominos in the yard!");
+        }
         private void firstMove(Domino domino, PictureBox pbox)
         {
             pbox.Size = Domino.Size;
@@ -124,8 +142,6 @@ namespace DominoCourseWork
                 rightPoint = new Point(domino.First == domino.Second ? rightPoint.X - 11 : rightPoint.X, vertRY);
                 vertRY += pbox.Size.Height + 3;
                 pbox.Location = rightPoint;
-                if (downCount == 0)
-                    vertRY += 32;
                 downCount++;
 
             }
@@ -204,7 +220,7 @@ namespace DominoCourseWork
         }
         public void hover(object obj, EventArgs e)
         {
-            //(this as Form).Text = new Domino((obj as PictureBox).Image).ToString();
+            (this as Form).Text = new Domino((obj as PictureBox).Image).ToString();
         }
         public void Dealt()
         {
@@ -223,19 +239,13 @@ namespace DominoCourseWork
                 Controls.Add(pbox);
             }
         }
-        private void PullTogether()
+        private void PullTogether(Player player, int yLoc)
         {
-            if (player1.PictureBoxList.Count > 0)
+            if (player.PictureBoxList.Count > 0)
             {
-                player1.PictureBoxList[0].Location = new Point(20, 486);
-                for (int i = 1; i < player1.PictureBoxList.Count; i++)
-                    player1.PictureBoxList[i].Location = new Point(player1.PictureBoxList[i - 1].Location.X + 42, 486);                  
-            }
-            if (player2.PictureBoxList.Count > 0)
-            {
-                player2.PictureBoxList[0].Location = new Point(20, 20);
-                for (int i = 1; i < player2.PictureBoxList.Count; i++)
-                    player2.PictureBoxList[i].Location = new Point(player2.PictureBoxList[i - 1].Location.X + 42, 20);
+                player.PictureBoxList[0].Location = new Point(20, yLoc);
+                for (int i = 1; i < player.PictureBoxList.Count; i++)
+                    player.PictureBoxList[i].Location = new Point(player.PictureBoxList[i - 1].Location.X + 42, yLoc);                  
             }
         }
     }
