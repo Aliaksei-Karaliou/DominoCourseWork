@@ -75,7 +75,10 @@ namespace DominoCourseWork
                 }
             }
             if (!move)
-                MessageBox.Show("Не могу походить");
+            {
+                Yard(player2, 20);
+                PCMove();
+            }
             PullTogether(player2, 20);
         }
 
