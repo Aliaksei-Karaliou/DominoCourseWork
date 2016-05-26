@@ -41,11 +41,14 @@ namespace DominoCourseWork
         });
         public static Domino RandomFree()
         {
-            Random rand = new Random();
-            byte num = Convert.ToByte(rand.Next(0, freeDomino.Count));
-            Domino result = freeDomino[num];
-            freeDomino.RemoveAt(num);
-            return result;
+           
+
+                Random rand = new Random();
+                byte num = Convert.ToByte(rand.Next(0, freeDomino.Count));
+                Domino result = freeDomino[num];
+                freeDomino.RemoveAt(num);
+                return result;
+
         }
         public static int Free { get { return freeDomino.Count; } }
     }
