@@ -13,7 +13,9 @@ namespace DominoCourseWork
         public Player(int height)
         {
            List = new List<Domino>();
+           List.Clear();
            PictureBoxList = new List<System.Windows.Forms.PictureBox>();
+           PictureBoxList.Clear();
            for (int i = 0; i < 6; i++)
            { 
                 List.Add(UsedDomino.RandomFree());

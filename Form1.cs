@@ -33,7 +33,11 @@ namespace DominoCourseWork
         {
             foreach (PictureBox pbox in table)
                 Controls.Remove(pbox);
-            Controls.Clear();
+            foreach (PictureBox pbox in player1.PictureBoxList)
+                Controls.Remove(pbox);
+            foreach (PictureBox pbox in player2.PictureBoxList)
+                Controls.Remove(pbox);
+            table.Clear();
             rightPoint = new Point(0, 0);
             leftPoint = rightPoint;
             Right = 7;
@@ -56,7 +60,6 @@ namespace DominoCourseWork
                 table.Add(pbox);
                 player1.PictureBoxList.Remove(pbox);
                 player1.List.Remove(domino);
-                (this as Form).Text = domino.ToString();
                 pbox.Click -= PictureBox_Click;
                 if (Right == 7)
                     firstMove(domino, pbox);
@@ -67,6 +70,7 @@ namespace DominoCourseWork
                 PCMove();
             }
             PullTogether(player1, 486);
+            (this as Form).Text = player1.List.Count + "." + player2.List.Count;
             if (TheEnd(player1))
             {
                 int sum = 0;
@@ -134,6 +138,7 @@ namespace DominoCourseWork
             }
             final:
             PullTogether(player2, 20);
+            (this as Form).Text = player1.List.Count + "." + player2.List.Count;
         }
 
         private void yardButton_Click(object sender, EventArgs e)
@@ -214,7 +219,7 @@ namespace DominoCourseWork
                     pbox.Location = new Point(pbox.Location.X, pbox.Location.Y - 11);
             }
             else rightPoint = new Point(rightPoint.X + pbox.Image.Width + 3, vertRY);
-           (this as Form).Text = downCount.ToString();
+          // (this as Form).Text = downCount.ToString();
             pbox.Size = pbox.Image.Size;
             label2.Text += '\n' + pbox.Location.ToString() + '-' + pbox.Size.ToString() + '-' + domino.ToString();
         }
@@ -279,7 +284,7 @@ namespace DominoCourseWork
         }
         public void hover(object obj, EventArgs e)
         {
-            (this as Form).Text = new Domino((obj as PictureBox).Image).ToString();
+            //(this as Form).Text = new Domino((obj as PictureBox).Image).ToString();
         }
         public void Dealt()
         {
