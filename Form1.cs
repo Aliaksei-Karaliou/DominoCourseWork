@@ -12,6 +12,7 @@ namespace DominoCourseWork
 {
     public partial class Form1 : Form
     {
+        List<PictureBox> table = new List<PictureBox>();
         bool againstPC = true;
         List<Domino> Field = new List<Domino>();
         Player player1 = new Player(486), player2 = new Player(20);
@@ -28,12 +29,31 @@ namespace DominoCourseWork
         {
             //(this as Form).Text = e.X + ";" + e.Y;
         }
+        private void NewRound()
+        {
+            foreach (PictureBox pbox in table)
+                Controls.Remove(pbox);
+            Controls.Clear();
+            rightPoint = new Point(0, 0);
+            leftPoint = rightPoint;
+            Right = 7;
+            Left = 7;
+            downCount = 0;
+            upCount = 0;
+            vertRY = 273;
+            vertLY = 273;
+            UsedDomino.Default();
+            player1 = new Player(486);
+            player2 = new Player(20);
+            Dealt();
+        }
         private void PictureBox_Click(object sender,EventArgs e)
         {
             PictureBox pbox = sender as PictureBox;
             Domino domino = new Domino(pbox.Image);
             if (domino.Contains(Right) || domino.Contains(Left) || Right == 7)
             {
+                table.Add(pbox);
                 player1.PictureBoxList.Remove(pbox);
                 player1.List.Remove(domino);
                 (this as Form).Text = domino.ToString();
@@ -43,14 +63,19 @@ namespace DominoCourseWork
                 else if (domino.Contains(Right))
                     rightMove(domino, pbox);
                 else if (domino.Contains(Left))
-                    leftMove(domino, pbox);           
+                    leftMove(domino, pbox);
+                PCMove();
             }
-            PCMove();
             PullTogether(player1, 486);
             if (TheEnd(player1))
             {
+                int sum = 0;
+                for (int i = 0; i < player2.List.Count; i++)
+                    sum += player2.List[i].First + player2.List[i].Second;
+                StaticForScores.Score1 += sum;
+                ScoreLabel.Text = string.Format("{0}:{1}", StaticForScores.Score1, StaticForScores.Score2);
                 MessageBox.Show("Player Won");
-                //Application.Exit();
+                NewRound();
             }
         }
 
@@ -62,6 +87,7 @@ namespace DominoCourseWork
             {
                 if (player2.List[i].Contains(Right))
                 {
+                    table.Add(player2.PictureBoxList[i]);
                     player2.PictureBoxList[i].Image = rotator.CounterClockWise(player2.List[i].Image);
                     rightMove(player2.List[i], player2.PictureBoxList[i]);
                     player2.PictureBoxList.RemoveAt(i);
@@ -71,6 +97,7 @@ namespace DominoCourseWork
                 }
                 else if (player2.List[i].Contains(Left))
                 {
+                    table.Add(player2.PictureBoxList[i]);
                     player2.PictureBoxList[i].Image = rotator.CounterClockWise(player2.List[i].Image);
                     leftMove(player2.List[i], player2.PictureBoxList[i]);
                     player2.PictureBoxList.RemoveAt(i);
@@ -78,17 +105,34 @@ namespace DominoCourseWork
                     move = true;
                     break;
                 }
+                else if (Right + Left == 14)
+                {
+                    player2.PictureBoxList[0].Image = rotator.CounterClockWise(player2.List[0].Image);
+                    firstMove(player2.List[0], player2.PictureBoxList[0]);
+                    player2.PictureBoxList.RemoveAt(0);
+                    player2.List.RemoveAt(0);
+                    move = true;
+                    break;
+                }
             }
             if (!move)
             {
-                Yard(player2, 20);
+                if (!Yard(player2, 20))
+                    goto final;
                 PCMove();
             }
             if (TheEnd(player2))
             {
+                int sum = 0;
+                for (int i = 0; i < player1.List.Count; i++)
+                    sum += player1.List[i].First + player1.List[i].Second;
+                StaticForScores.Score2 += sum;
+                ScoreLabel.Text = string.Format("{0}:{1}", StaticForScores.Score1, StaticForScores.Score2);
                 MessageBox.Show("PC Won");
-               // Application.Exit();
+                NewRound();
+
             }
+            final:
             PullTogether(player2, 20);
         }
 
@@ -96,7 +140,7 @@ namespace DominoCourseWork
         {
             Yard(player1, 486);
         }
-        private void Yard (Player player, int locY)
+        private bool Yard (Player player, int locY)
         {
             if (UsedDomino.Free > 0)
             {
@@ -109,8 +153,10 @@ namespace DominoCourseWork
                 player.PictureBoxList[player.PictureBoxList.Count - 1].SizeMode = PictureBoxSizeMode.Zoom;
                 player.PictureBoxList[player.PictureBoxList.Count - 1].Image = rotator.CounterClockWise(player.PictureBoxList[player.PictureBoxList.Count - 1].Image);
                 PullTogether(player, locY);
+                return true;
             }
             else MessageBox.Show("There is no dominos in the yard!");
+            return false;
         }
         private void firstMove(Domino domino, PictureBox pbox)
         {

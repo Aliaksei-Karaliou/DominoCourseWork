@@ -31,6 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.yardButton = new System.Windows.Forms.Button();
+            this.ScoreLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -49,6 +50,7 @@
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "label2";
+            this.label2.Visible = false;
             // 
             // yardButton
             // 
@@ -60,12 +62,23 @@
             this.yardButton.UseVisualStyleBackColor = true;
             this.yardButton.Click += new System.EventHandler(this.yardButton_Click);
             // 
+            // ScoreLabel
+            // 
+            this.ScoreLabel.AutoSize = true;
+            this.ScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 50F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ScoreLabel.Location = new System.Drawing.Point(594, 22);
+            this.ScoreLabel.Name = "ScoreLabel";
+            this.ScoreLabel.Size = new System.Drawing.Size(126, 76);
+            this.ScoreLabel.TabIndex = 3;
+            this.ScoreLabel.Text = "0:0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGreen;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.ScoreLabel);
             this.Controls.Add(this.yardButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -84,6 +97,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button yardButton;
+        private System.Windows.Forms.Label ScoreLabel;
     }
 }
 

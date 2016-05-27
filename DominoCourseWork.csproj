@@ -61,6 +61,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SizeReverse.cs" />
+    <Compile Include="StaticForScores.cs" />
     <Compile Include="SwapClass.cs" />
     <Compile Include="UsedDomino.cs" />
     <EmbeddedResource Include="Form1.resx">
