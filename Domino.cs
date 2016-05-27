@@ -100,7 +100,16 @@ namespace DominoCourseWork
         }
         public bool Contains(byte number)
         {
-            if (number == First || number == Second) return true;
+            if (number == First || number == Second)
+                return true;
+            return false;
+        }
+
+        public bool ContainsAny(params byte[] arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+                if (Contains(arr[i]))
+                    return true;
             return false;
         }
 
