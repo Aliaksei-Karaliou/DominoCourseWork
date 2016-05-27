@@ -47,6 +47,11 @@ namespace DominoCourseWork
             }
             PCMove();
             PullTogether(player1, 486);
+            if (TheEnd(player1))
+            {
+                MessageBox.Show("Player Won");
+                //Application.Exit();
+            }
         }
 
         private void PCMove()
@@ -79,6 +84,11 @@ namespace DominoCourseWork
                 Yard(player2, 20);
                 PCMove();
             }
+            if (TheEnd(player2))
+            {
+                MessageBox.Show("PC Won");
+               // Application.Exit();
+            }
             PullTogether(player2, 20);
         }
 
@@ -97,7 +107,7 @@ namespace DominoCourseWork
                 player.PictureBoxList[player.PictureBoxList.Count - 1].Click += PictureBox_Click;
                 player.PictureBoxList[player.PictureBoxList.Count - 1].MouseHover += hover;
                 player.PictureBoxList[player.PictureBoxList.Count - 1].SizeMode = PictureBoxSizeMode.Zoom;
-                player.PictureBoxList[player.PictureBoxList.Count - 1].Image = rotator.ClockWise(player.PictureBoxList[player.PictureBoxList.Count - 1].Image);
+                player.PictureBoxList[player.PictureBoxList.Count - 1].Image = rotator.CounterClockWise(player.PictureBoxList[player.PictureBoxList.Count - 1].Image);
                 PullTogether(player, locY);
             }
             else MessageBox.Show("There is no dominos in the yard!");
@@ -133,7 +143,7 @@ namespace DominoCourseWork
             else
                 pbox.Location = new Point(pbox.Location.X, vertRY - 11);
             Right = (byte)(domino.First + domino.Second - Right);
-            if (rightPoint.X > 450 && (downCount > 1 || domino.First != domino.Second) && downCount<=2)
+            if (rightPoint.X > 700 && (downCount > 1 || domino.First != domino.Second) && downCount<=2)
             {
                 ImageRotator rotator = new ImageRotator();
                 if (domino.First == domino.Second)
@@ -175,7 +185,7 @@ namespace DominoCourseWork
             }
             else
                 leftPoint = new Point(leftPoint.X, vertLY - 11);
-            if (leftPoint.X < 300 && (upCount > 0 || domino.First != domino.Second) && upCount <= 2)
+            if (leftPoint.X < 100 && (upCount > 0 || domino.First != domino.Second) && upCount <= 2)
             {
                 ImageRotator rotator = new ImageRotator();
                 pbox.Size = pbox.Size.Reverse();
@@ -250,6 +260,10 @@ namespace DominoCourseWork
                 for (int i = 1; i < player.PictureBoxList.Count; i++)
                     player.PictureBoxList[i].Location = new Point(player.PictureBoxList[i - 1].Location.X + 42, yLoc);                  
             }
+        }
+        private bool TheEnd(Player player)
+        {
+            return player.List.Count == 0;
         }
     }
 }
