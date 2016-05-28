@@ -6,29 +6,16 @@ using System.Threading.Tasks;
 
 namespace DominoCourseWork
 {
-    class Player
+    [Serializable]
+    public class Player:IEquatable<Player>
     {
         public List<Domino> List { get; private set; }
-        public List<System.Windows.Forms.PictureBox> PictureBoxList { get; private set; }
-        public Player(int height)
+        public Player()
         {
            List = new List<Domino>();
            List.Clear();
-           PictureBoxList = new List<System.Windows.Forms.PictureBox>();
-           PictureBoxList.Clear();
            for (int i = 0; i < 6; i++)
-           { 
-                List.Add(UsedDomino.RandomFree());
-                System.Windows.Forms.PictureBox pbox = new System.Windows.Forms.PictureBox();
-                pbox.Size = new System.Drawing.Size(28, 56);
-                pbox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-                if (i == 0)
-                    pbox.Location = new System.Drawing.Point(20, height);
-                else pbox.Location = new System.Drawing.Point(Domino.Size.Width + PictureBoxList[i - 1].Location.X + 20, height);
-                ImageRotator rotator = new ImageRotator();
-                pbox.Image = rotator.CounterClockWise(List[i].Image);
-                PictureBoxList.Add(pbox);
-           }
+                List.Add(Buffer.UsedDomino.RandomFree());
         }
         public void Move(Domino domino)
         {
@@ -36,13 +23,18 @@ namespace DominoCourseWork
         }
         public Domino GiveFromTheYard()
         {
-            Domino result = UsedDomino.RandomFree();
+            Domino result = Buffer.UsedDomino.RandomFree();
             List.Add(result);
             System.Windows.Forms.PictureBox box = new System.Windows.Forms.PictureBox();
-            box.Image = result.Image;
-            PictureBoxList.Add(box);           
+            box.Image = result.Image;          
             return result;
         }
+
+        public bool Equals(Player other)
+        {
+            return other.List.Equals(List);
+        }
+
         public int DominoCount { get { return List.Count; } }
     }
 }

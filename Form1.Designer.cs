@@ -32,12 +32,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.yardButton = new System.Windows.Forms.Button();
             this.ScoreLabel = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(131, 49);
+            this.label1.Location = new System.Drawing.Point(612, 58);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(0, 13);
             this.label1.TabIndex = 0;
@@ -64,13 +65,21 @@
             // 
             // ScoreLabel
             // 
-            this.ScoreLabel.AutoSize = true;
             this.ScoreLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 50F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ScoreLabel.Location = new System.Drawing.Point(554, 23);
+            this.ScoreLabel.Location = new System.Drawing.Point(481, 9);
             this.ScoreLabel.Name = "ScoreLabel";
-            this.ScoreLabel.Size = new System.Drawing.Size(126, 76);
-            this.ScoreLabel.TabIndex = 3;
+            this.ScoreLabel.Size = new System.Drawing.Size(291, 139);
+            this.ScoreLabel.TabIndex = 0;
             this.ScoreLabel.Text = "0:0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(491, 148);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "label3";
             // 
             // Form1
             // 
@@ -78,6 +87,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGreen;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.ScoreLabel);
             this.Controls.Add(this.yardButton);
             this.Controls.Add(this.label2);
@@ -86,6 +96,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -98,6 +109,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button yardButton;
         private System.Windows.Forms.Label ScoreLabel;
+        private System.Windows.Forms.Label label3;
     }
 }
 

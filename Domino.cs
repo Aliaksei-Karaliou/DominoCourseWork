@@ -8,6 +8,7 @@ using System.Drawing;
 
 namespace DominoCourseWork
 {
+    [Serializable]
     public class Domino:IEquatable<Domino>,ICloneable
     {
         public static Size Size

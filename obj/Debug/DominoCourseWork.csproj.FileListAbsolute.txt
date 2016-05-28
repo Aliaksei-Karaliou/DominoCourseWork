@@ -7,3 +7,6 @@ C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourse
 C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourseWork.csproj.GenerateResource.Cache
 C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourseWork.exe
 C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourseWork.pdb
+C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourseWork.StartingForm.resources
+C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourseWork.OnlineForm.resources
+C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourseWork.ServerForm.resources
