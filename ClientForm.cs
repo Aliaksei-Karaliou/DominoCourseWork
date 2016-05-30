@@ -23,24 +23,27 @@ namespace DominoCourseWork
         private void ConnectButton_Click(object sender, EventArgs e)
         {
             Buffer.Client = new TcpClient();
-            try
+         //   try
             {
-                IPEndPoint IpEnd = new IPEndPoint(IPAddress.Parse(IPTextBox.Text), (int)PortUpDown.Value);
-                Buffer.Client.Connect(IpEnd);
-                if (!Buffer.Client.Connected)
-                    MessageBox.Show("It is not possible to connect the server");
-                else
-                {
-                    Hide();
-                    Form1 form = new Form1(GameType.Client);
-                    form.ShowDialog();
-                    Close();
-                }
+                Buffer.Listener = new TcpListener(IPAddress.Parse(IPTextBox.Text), (int)PortUpDown.Value);
+                Buffer.Listener.Start();
+                Hide();
+                Form1 form = new Form1(GameType.Client);
+                form.ShowDialog();
+                Close();
             }
-            catch
+        /*    catch(Exception ex)
             {
-                MessageBox.Show("It is not possible to connect the server");
-            }
+                MessageBox.Show(ex.Message);
+            }*/
+        }
+
+        private void ReturnButton_Click(object sender, EventArgs e)
+        {
+            Hide();
+            OnlineForm form = new OnlineForm();
+            form.ShowDialog();
+            Close();
         }
     }
 }

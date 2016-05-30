@@ -11,6 +11,8 @@ namespace DominoCourseWork
     {
         public static UsedDomino UsedDomino = new UsedDomino();
         public static TcpClient Client;
-
+        public static TcpListener Listener;
+        public static byte[] CurrentSender=new byte[0];
+        public static byte[] PreviousSender=new byte[0];
     }
 }

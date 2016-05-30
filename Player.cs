@@ -17,6 +17,10 @@ namespace DominoCourseWork
            for (int i = 0; i < 6; i++)
                 List.Add(Buffer.UsedDomino.RandomFree());
         }
+        private Player(List<Domino> List)
+        {
+            this.List = new List<Domino>(List);
+        }
         public void Move(Domino domino)
         {
             List.Remove(domino);
@@ -36,8 +40,9 @@ namespace DominoCourseWork
         }
 
         public object Clone()
-        {
-            throw new NotImplementedException();
+        { 
+            Player result = new Player(List);
+            return result;
         }
 
         public int DominoCount { get { return List.Count; } }
