@@ -20,7 +20,7 @@ namespace DominoCourseWork
         private void localButton_Click(object sender, EventArgs e)
         {
             Hide();
-            Form1 form = new Form1();
+            Form1 form = new Form1(GameType.Local);
             form.ShowDialog();
             Close();
         }

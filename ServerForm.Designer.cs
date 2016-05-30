@@ -28,22 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.IPTextBox = new System.Windows.Forms.TextBox();
             this.IPLable = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.CreateButton = new System.Windows.Forms.Button();
             this.ReturnButton = new System.Windows.Forms.Button();
             this.PortUpDown = new System.Windows.Forms.NumericUpDown();
+            this.IPTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.PortUpDown)).BeginInit();
             this.SuspendLayout();
-            // 
-            // IPTextBox
-            // 
-            this.IPTextBox.Enabled = false;
-            this.IPTextBox.Location = new System.Drawing.Point(13, 13);
-            this.IPTextBox.Name = "IPTextBox";
-            this.IPTextBox.Size = new System.Drawing.Size(183, 20);
-            this.IPTextBox.TabIndex = 0;
             // 
             // IPLable
             // 
@@ -100,6 +92,14 @@
             0,
             0});
             // 
+            // IPTextBox
+            // 
+            this.IPTextBox.Enabled = false;
+            this.IPTextBox.Location = new System.Drawing.Point(13, 13);
+            this.IPTextBox.Name = "IPTextBox";
+            this.IPTextBox.Size = new System.Drawing.Size(183, 20);
+            this.IPTextBox.TabIndex = 0;
+            // 
             // ServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -120,12 +120,11 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox IPTextBox;
         private System.Windows.Forms.Label IPLable;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button CreateButton;
         private System.Windows.Forms.Button ReturnButton;
         private System.Windows.Forms.NumericUpDown PortUpDown;
+        private System.Windows.Forms.TextBox IPTextBox;
     }
 }

@@ -10,3 +10,4 @@ C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourse
 C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourseWork.StartingForm.resources
 C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourseWork.OnlineForm.resources
 C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourseWork.ServerForm.resources
+C:\Users\korol\OneDrive\DominoCourseWork\DominoCourseWork\obj\Debug\DominoCourseWork.ClientForm.resources

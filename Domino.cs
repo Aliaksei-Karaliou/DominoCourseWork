@@ -141,7 +141,8 @@ namespace DominoCourseWork
                         else pixel = Color.White;
                         result.SetPixel(j, i, pixel);
                     }
-                return result;
+                ImageRotator rotator = new ImageRotator();
+                return rotator.CounterClockWise(result);
             }
         }
         public override string ToString()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DominoCourseWork
 {
     [Serializable]
-    public class Player:IEquatable<Player>
+    public class Player:IEquatable<Player>,ICloneable
     {
         public List<Domino> List { get; private set; }
         public Player()
@@ -33,6 +33,11 @@ namespace DominoCourseWork
         public bool Equals(Player other)
         {
             return other.List.Equals(List);
+        }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
         }
 
         public int DominoCount { get { return List.Count; } }

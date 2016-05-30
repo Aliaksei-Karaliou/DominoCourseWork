@@ -33,6 +33,7 @@
             this.yardButton = new System.Windows.Forms.Button();
             this.ScoreLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.Skip = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -81,12 +82,24 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "label3";
             // 
+            // Skip
+            // 
+            this.Skip.Location = new System.Drawing.Point(697, 526);
+            this.Skip.Name = "Skip";
+            this.Skip.Size = new System.Drawing.Size(75, 23);
+            this.Skip.TabIndex = 4;
+            this.Skip.Text = "Skip";
+            this.Skip.UseVisualStyleBackColor = true;
+            this.Skip.Visible = false;
+            this.Skip.Click += new System.EventHandler(this.Skip_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGreen;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.Skip);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.ScoreLabel);
             this.Controls.Add(this.yardButton);
@@ -110,6 +123,7 @@
         private System.Windows.Forms.Button yardButton;
         private System.Windows.Forms.Label ScoreLabel;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button Skip;
     }
 }
 

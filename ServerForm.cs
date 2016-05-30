@@ -39,17 +39,28 @@ namespace DominoCourseWork
             form.ShowDialog();
             Close();
         }
- private void CreateButton_Click(object sender, EventArgs e)
+        private void CreateButton_Click(object sender, EventArgs e)
         {
-            TcpListener listener = new TcpListener(IPAddress.Any, int.Parse(IPTextBox.Text));
-            listener.Start();
-            Buffer.Client = listener.AcceptTcpClient();
-           /* Reader = new StreamReader(Client.GetStream());
-            Writer = new StreamWriter(Client.GetStream());
-            Writer.AutoFlush = true;
-            ReceiveDataBW.RunWorkerAsync();//ReceiveData
-            SendDataBW.WorkerSupportsCancellation = true;
-            (this as Form).Text = "Server";*/
+            TcpListener listener = new TcpListener(IPAddress.Any, (int)PortUpDown.Value);
+            try
+            {
+                listener.Start();
+                Buffer.Client = listener.AcceptTcpClient();
+            }
+            catch
+            {
+                MessageBox.Show("Unnable to start a server");
+            }
+            Hide();
+            Form1 form = new Form1(GameType.Server);
+            form.ShowDialog();
+            Close();
+            /* Reader = new StreamReader(Client.GetStream());
+             Writer = new StreamWriter(Client.GetStream());
+             Writer.AutoFlush = true;
+             ReceiveDataBW.RunWorkerAsync();//ReceiveData
+             SendDataBW.WorkerSupportsCancellation = true;
+             (this as Form).Text = "Server";*/
         }
     }
 }

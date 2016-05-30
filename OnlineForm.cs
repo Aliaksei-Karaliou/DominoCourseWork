@@ -32,5 +32,13 @@ namespace DominoCourseWork
             form.ShowDialog();
             Close();
         }
+
+        private void ConnectButton_Click(object sender, EventArgs e)
+        {
+            Hide();
+            ClientForm form = new ClientForm();
+            form.ShowDialog();
+            Close();
+        }
     }
 }
