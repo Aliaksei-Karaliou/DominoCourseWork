@@ -41,15 +41,17 @@ namespace DominoCourseWork
         }
         private void CreateButton_Click(object sender, EventArgs e)
         {
-            TcpListener listener = new TcpListener(IPAddress.Any, (int)PortUpDown.Value);
+            Buffer.Listener = new TcpListener(IPAddress.Any, (int)PortUpDown.Value);
             try
             {
-                listener.Start();
-                Buffer.Client = listener.AcceptTcpClient();
+                Clipboard.SetText(IPTextBox.Text);
+                Buffer.Listener.Start();
+                Buffer.Client = Buffer.Listener.AcceptTcpClient();
+                //Console.WriteLine(Buffer.Client.Connected);
             }
-            catch
+            catch(Exception ex)
             {
-                MessageBox.Show("Unnable to start a server");
+                MessageBox.Show(ex.Message);
             }
             Hide();
             Form1 form = new Form1(GameType.Server);

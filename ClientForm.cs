@@ -23,27 +23,22 @@ namespace DominoCourseWork
         private void ConnectButton_Click(object sender, EventArgs e)
         {
             Buffer.Client = new TcpClient();
-         //   try
+            try
             {
-                Buffer.Listener = new TcpListener(IPAddress.Parse(IPTextBox.Text), (int)PortUpDown.Value);
-                Buffer.Listener.Start();
-                Hide();
-                Form1 form = new Form1(GameType.Client);
-                form.ShowDialog();
-                Close();
+                IPEndPoint IpEnd = new IPEndPoint(IPAddress.Parse(IPTextBox.Text), (int)PortUpDown.Value);
+                Buffer.Client.Connect(IpEnd);
+                if (Buffer.Client.Connected)
+                {
+                    Hide();
+                    Form1 form = new Form1(GameType.Client);
+                    form.ShowDialog();
+                    Close();
+                }
             }
-        /*    catch(Exception ex)
+            catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }*/
-        }
-
-        private void ReturnButton_Click(object sender, EventArgs e)
-        {
-            Hide();
-            OnlineForm form = new OnlineForm();
-            form.ShowDialog();
-            Close();
+            }
         }
     }
 }

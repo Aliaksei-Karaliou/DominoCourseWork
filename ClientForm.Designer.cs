@@ -62,7 +62,6 @@
             this.ReturnButton.TabIndex = 11;
             this.ReturnButton.Text = "Return back";
             this.ReturnButton.UseVisualStyleBackColor = true;
-            this.ReturnButton.Click += new System.EventHandler(this.ReturnButton_Click);
             // 
             // ConnectButton
             // 
@@ -98,13 +97,12 @@
             this.IPTextBox.Name = "IPTextBox";
             this.IPTextBox.Size = new System.Drawing.Size(183, 20);
             this.IPTextBox.TabIndex = 7;
-            this.IPTextBox.Text = "192.168.100.3";
             // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(280, 91);
+            this.ClientSize = new System.Drawing.Size(295, 91);
             this.Controls.Add(this.PortUpDown);
             this.Controls.Add(this.ReturnButton);
             this.Controls.Add(this.ConnectButton);

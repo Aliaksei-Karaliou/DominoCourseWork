@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,7 +16,7 @@ namespace DominoCourseWork
         List<PictureBox> player1PictureBox = new List<PictureBox>();
         List<PictureBox> player2PictureBox = new List<PictureBox>();
         List<PictureBox> table = new List<PictureBox>();
-        Player player1, player2;
+        Player player1 = new Player(), player2 = new Player();
         Point rightPoint, leftPoint;
         new byte Right = 7, Left = 7;
         byte downCount = 0, upCount = 0;
@@ -26,11 +25,28 @@ namespace DominoCourseWork
         public Form1(GameType type)
         {
             InitializeComponent();
+            if (type!=GameType.Local)
+                ServerActions();
             this.type = type;
             Text = type.ToString();
             NewRound();
         }
 
+        private void ServerActions()
+        {
+            Player buf = player1;
+            player1 = player2;
+            player2 = buf;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+            //(this as Form).Text = e.X + ";" + e.Y;
+        }
         private void NewRound()
         {
             foreach (PictureBox pbox in table)
@@ -50,6 +66,7 @@ namespace DominoCourseWork
             upCount = 0;
             vertRY = 273;
             vertLY = 273;
+            Buffer.UsedDomino=new UsedDomino();
             Dealt();
 
         }
@@ -219,6 +236,7 @@ namespace DominoCourseWork
             pbox.Location = new Point(392 - pbox.Image.Width / 2, domino.First != domino.Second ? vertRY : 261);
             if (domino.First != domino.Second)
             {
+                pbox.Size = pbox.Size.Reverse();
                 ImageRotator rotator = new ImageRotator();
                 pbox.Image = rotator.ClockWise(pbox.Image);
             }
@@ -293,6 +311,7 @@ namespace DominoCourseWork
             }
             if (leftPoint.X < 100 && (upCount > 0 || domino.First != domino.Second) && upCount <= 2)
             {
+                pbox.Size = pbox.Size.Reverse();
                 pbox.Image = rotator.CounterClockWise(pbox.Image);
                 vertLY -= pbox.Size.Height + 3;
                 leftPoint = new Point(domino.First == domino.Second ? leftPoint.X - 11 : leftPoint.X, vertLY);
@@ -348,49 +367,56 @@ namespace DominoCourseWork
         {
             if (type != GameType.Client)
             {
-                player1 = new Player();
-                player2 = new Player();
-                for (int i = 0; i < 6; i++)
-                {
-                    Point point;
-                    if (i == 0)
-                        point = new Point(20, 486);
-                    else point = new Point(Domino.Size.Width + player1PictureBox[i - 1].Location.X + 20, 486);
-                    ImageRotator rotator = new ImageRotator();
-                    PictureBox pbox1 = PictureBoxCreator(player1.List[i].Image, point);
-                    player1PictureBox.Add(pbox1);
-                    Controls.Add(pbox1);
-                    pbox1.Click += PictureBox_Click;
-                    if (i == 0)
-                        point = new Point(20, 20);
-                    else point = new Point(Domino.Size.Width + player2PictureBox[i - 1].Location.X + 20, 20);
-                    //PictureBox pbox2 = PictureBoxCreator(Properties.Resources.back, point);
-                    PictureBox pbox2 = PictureBoxCreator(player2.List[i].Image, point);
-                    player2PictureBox.Add(pbox2);
-                    Controls.Add(pbox2);
-                    if (type == GameType.Server)
-                    {
-                        Sender send = new Sender(player1, player2);
-                        Buffer.CurrentSender = send.Output();
-                        NetworkStream stream = Buffer.Client.GetStream();
-                        stream.Write(Buffer.CurrentSender, 0, Buffer.CurrentSender.Length);
-                    }
-                }
+                Player player1 = new Player();
+                Player player2 = new Player();
             }
             else
             {
-                try
+                List<Domino> List = new List<Domino>();
+                for (int i = 0; i < 12; i++)
                 {
-                    Socket s = Buffer.Listener.AcceptSocket();//принимаем
-                    byte[] b = new byte[10000];
-                    int k = s.Receive(b);
-                    MessageBox.Show(b.ToString());
+                    byte[] buf = TcpSender.Read();
+                    Domino domino = new Domino(buf[0], buf[1]);
+                    List.Add(domino);
+                    if (i == 5)
+                    {
+                        player2 = new Player(List);
+                        List.Clear();
+                    }
                 }
-                catch (Exception ex)
+                player1 = new Player(List);
+                List.Clear();
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                Point point;
+                if (i == 0)
+                    point = new Point(20, 486);
+                else point = new Point(Domino.Size.Width + player1PictureBox[i - 1].Location.X + 20, 486);
+                ImageRotator rotator = new ImageRotator();
+                PictureBox pbox1 = PictureBoxCreator(player1.List[i].Image, point);
+                DominoSender sender = new DominoSender(player1.List[i], DominoSendingState.Start);
+                player1PictureBox.Add(pbox1);
+                Controls.Add(pbox1);
+                pbox1.Click += PictureBox_Click;
+                DominoSender dsender = new DominoSender(player1.List[i], DominoSendingState.Start);
+                if (type == GameType.Server)
+                        TcpSender.Send(dsender.Bytes());
+                }
+            for (int i = 0; i < 6; i++)
                 {
-                    
-                }
-            }            
+                Point point;
+                if (i == 0)
+                    point = new Point(20, 20);
+                else point = new Point(Domino.Size.Width + player2PictureBox[i - 1].Location.X + 20, 20);
+                //PictureBox pbox2 = PictureBoxCreator(Properties.Resources.back, point);
+                PictureBox pbox2 = PictureBoxCreator(player2.List[i].Image, point);
+                player2PictureBox.Add(pbox2);
+                Controls.Add(pbox2);
+                DominoSender dsender = new DominoSender(player2.List[i], DominoSendingState.Start);
+                if (type == GameType.Server)
+                    TcpSender.Send(dsender.Bytes());
+            }
         }
         private void PullTogether(Player player, int yLoc)
         {

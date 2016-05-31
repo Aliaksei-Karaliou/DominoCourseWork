@@ -17,7 +17,7 @@ namespace DominoCourseWork
            for (int i = 0; i < 6; i++)
                 List.Add(Buffer.UsedDomino.RandomFree());
         }
-        private Player(List<Domino> List)
+        public Player(List<Domino> List)
         {
             this.List = new List<Domino>(List);
         }
@@ -40,9 +40,8 @@ namespace DominoCourseWork
         }
 
         public object Clone()
-        { 
-            Player result = new Player(List);
-            return result;
+        {
+            throw new NotImplementedException();
         }
 
         public int DominoCount { get { return List.Count; } }
