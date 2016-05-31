@@ -18,6 +18,10 @@ namespace DominoCourseWork
                return new Size(22, 44);
             }
         }
+        public Domino()
+        {
+
+        }
         public Domino(byte First, byte Second)
         {
             if (First > Second) SwapClass.Swap(ref First, ref Second);

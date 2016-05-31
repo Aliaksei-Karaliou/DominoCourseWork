@@ -14,6 +14,7 @@ namespace DominoCourseWork
 {
     public partial class Form1 : Form
     {
+        public static bool Blocked;
         private GameType type;
         List<PictureBox> player1PictureBox = new List<PictureBox>();
         List<PictureBox> player2PictureBox = new List<PictureBox>();
@@ -35,8 +36,12 @@ namespace DominoCourseWork
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (type !=  GameType.Client)
+            if (type != GameType.Client)
+            {
+                Blocked = false;
                 NewRound();
+            }
+            Blocked = true;
         }
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
@@ -83,7 +88,7 @@ namespace DominoCourseWork
             }
             if (domino.Contains(Right) || domino.Contains(Left) || Right == 7)
             {
-
+                Blocked = true;
                 table.Add(pbox);
                 player1PictureBox.Remove(pbox);
                 player1.List.Remove(domino);
@@ -133,10 +138,6 @@ namespace DominoCourseWork
                 MessageBox.Show("Draw");
                 NewRound();
             }
-        }
-        private void AnotherPlayerMove()
-        {
-
         }
         private void PCMove()
         {
@@ -426,6 +427,17 @@ namespace DominoCourseWork
                     list[i].Location = new Point(list[i - 1].Location.X + 42, yLoc);
             }
         }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            SFD.ShowDialog();
+            List<Domino> table = new List<Domino>();
+            foreach (PictureBox pbox in this.table)
+                table.Add(new Domino(pbox.Image));
+            SaveClass saved = new SaveClass(player1, player2, table, leftPoint);
+            saved.Save("");
+        }
+
         private bool Win(Player player)
         {
             return player.List.Count == 0;

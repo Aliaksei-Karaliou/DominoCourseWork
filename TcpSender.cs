@@ -67,6 +67,7 @@ namespace DominoCourseWork
                     {
                         Form1.Form.Invoke(new Action(() =>
                         {
+                            Form1.Blocked = false;
                             Form1.Form.PictureBox_Click(new Domino(bytes[1], bytes[2]), null);
                         }));
                         break;
