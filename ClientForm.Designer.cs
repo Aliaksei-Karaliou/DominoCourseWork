@@ -62,6 +62,7 @@
             this.ReturnButton.TabIndex = 11;
             this.ReturnButton.Text = "Return back";
             this.ReturnButton.UseVisualStyleBackColor = true;
+            this.ReturnButton.Click += new System.EventHandler(this.ReturnButton_Click);
             // 
             // ConnectButton
             // 

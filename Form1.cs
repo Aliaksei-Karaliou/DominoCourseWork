@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,38 +18,31 @@ namespace DominoCourseWork
         List<PictureBox> player1PictureBox = new List<PictureBox>();
         List<PictureBox> player2PictureBox = new List<PictureBox>();
         List<PictureBox> table = new List<PictureBox>();
-        Player player1 = new Player(), player2 = new Player();
+        Player player1, player2;
         Point rightPoint, leftPoint;
         new byte Right = 7, Left = 7;
         byte downCount = 0, upCount = 0;
         int vertRY = 273, vertLY = 273;
+        public static Form1 Form { get; private set; }
 
         public Form1(GameType type)
         {
-            InitializeComponent();
-            if (type!=GameType.Local)
-                ServerActions();
             this.type = type;
             Text = type.ToString();
-            NewRound();
-        }
-
-        private void ServerActions()
-        {
-            Player buf = player1;
-            player1 = player2;
-            player2 = buf;
+            InitializeComponent();
+            Form = this;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            if (type ==  GameType.Server)
+                NewRound();
         }
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
             //(this as Form).Text = e.X + ";" + e.Y;
         }
-        private void NewRound()
+        public void NewRound()
         {
             foreach (PictureBox pbox in table)
                 Controls.Remove(pbox);
@@ -66,7 +61,7 @@ namespace DominoCourseWork
             upCount = 0;
             vertRY = 273;
             vertLY = 273;
-            Buffer.UsedDomino=new UsedDomino();
+            Buffer.UsedDomino = new UsedDomino();
             Dealt();
 
         }
@@ -76,6 +71,7 @@ namespace DominoCourseWork
             Domino domino = new Domino(pbox.Image);
             if (domino.Contains(Right) || domino.Contains(Left) || Right == 7)
             {
+
                 table.Add(pbox);
                 player1PictureBox.Remove(pbox);
                 player1.List.Remove(domino);
@@ -86,7 +82,13 @@ namespace DominoCourseWork
                     rightMove(domino, pbox);
                 else if (domino.Contains(Left))
                     leftMove(domino, pbox);
-                PCMove();
+                if (type != GameType.Local)
+                {
+                    DominoSender Sender = new DominoSender(DominoSendingState.Move, domino);
+                    TcpSender.Send(Sender.Bytes());
+                }
+                else
+                    PCMove();
             }
             PullTogether(player1, 486);
             (this as Form).Text = player1.List.Count + "." + player2.List.Count;
@@ -120,7 +122,10 @@ namespace DominoCourseWork
                 NewRound();
             }
         }
+        private void AnotherPlayerMove()
+        {
 
+        }
         private void PCMove()
         {
             ImageRotator rotator = new ImageRotator();
@@ -307,7 +312,7 @@ namespace DominoCourseWork
             else
             {
                 leftPoint = new Point(leftPoint.X, vertLY - 11);
-              //  rotator.ClockWise(pbox.Image);
+                //  rotator.ClockWise(pbox.Image);
             }
             if (leftPoint.X < 100 && (upCount > 0 || domino.First != domino.Second) && upCount <= 2)
             {
@@ -367,26 +372,10 @@ namespace DominoCourseWork
         {
             if (type != GameType.Client)
             {
-                Player player1 = new Player();
-                Player player2 = new Player();
+                player1 = new Player();
+                player2 = new Player();
             }
-            else
-            {
-                List<Domino> List = new List<Domino>();
-                for (int i = 0; i < 12; i++)
-                {
-                    byte[] buf = TcpSender.Read();
-                    Domino domino = new Domino(buf[0], buf[1]);
-                    List.Add(domino);
-                    if (i == 5)
-                    {
-                        player2 = new Player(List);
-                        List.Clear();
-                    }
-                }
-                player1 = new Player(List);
-                List.Clear();
-            }
+            DominoSender sender = new DominoSender();
             for (int i = 0; i < 6; i++)
             {
                 Point point;
@@ -395,16 +384,13 @@ namespace DominoCourseWork
                 else point = new Point(Domino.Size.Width + player1PictureBox[i - 1].Location.X + 20, 486);
                 ImageRotator rotator = new ImageRotator();
                 PictureBox pbox1 = PictureBoxCreator(player1.List[i].Image, point);
-                DominoSender sender = new DominoSender(player1.List[i], DominoSendingState.Start);
                 player1PictureBox.Add(pbox1);
                 Controls.Add(pbox1);
                 pbox1.Click += PictureBox_Click;
-                DominoSender dsender = new DominoSender(player1.List[i], DominoSendingState.Start);
-                if (type == GameType.Server)
-                        TcpSender.Send(dsender.Bytes());
-                }
+                sender.Array.Add(player1.List[i]);
+            }
             for (int i = 0; i < 6; i++)
-                {
+            {
                 Point point;
                 if (i == 0)
                     point = new Point(20, 20);
@@ -413,10 +399,10 @@ namespace DominoCourseWork
                 PictureBox pbox2 = PictureBoxCreator(player2.List[i].Image, point);
                 player2PictureBox.Add(pbox2);
                 Controls.Add(pbox2);
-                DominoSender dsender = new DominoSender(player2.List[i], DominoSendingState.Start);
-                if (type == GameType.Server)
-                    TcpSender.Send(dsender.Bytes());
+                sender.Array.Add(player2.List[i]);
             }
+            if (type==GameType.Server)
+                TcpSender.Send(sender.Bytes());
         }
         private void PullTogether(Player player, int yLoc)
         {
@@ -425,7 +411,7 @@ namespace DominoCourseWork
             {
                 list[0].Location = new Point(20, yLoc);
                 for (int i = 1; i < list.Count; i++)
-                    list[i].Location = new Point(list[i-1].Location.X + 42, yLoc);
+                    list[i].Location = new Point(list[i - 1].Location.X + 42, yLoc);
             }
         }
         private bool Win(Player player)
@@ -456,6 +442,14 @@ namespace DominoCourseWork
             pbox.Location = point;
             pbox.Image = image;
             return pbox;
+        }
+
+        public void CreatePlayer(int idx, List<Domino> domins)
+        {
+            if (idx == 0)
+                player2 = new Player(domins);
+            else
+                player1 = new Player(domins);
         }
     }
 }
