@@ -65,7 +65,10 @@ namespace DominoCourseWork
                     }
                 case 1:
                     {
-
+                        Form1.Form.Invoke(new Action(() =>
+                        {
+                            Form1.Form.PictureBox_Click(new Domino(bytes[1], bytes[2]), null);
+                        }));
                         break;
                     }
                 default:

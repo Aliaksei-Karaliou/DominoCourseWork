@@ -35,7 +35,7 @@ namespace DominoCourseWork
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (type ==  GameType.Server)
+            if (type !=  GameType.Client)
                 NewRound();
         }
         private void Form1_MouseMove(object sender, MouseEventArgs e)
@@ -65,10 +65,22 @@ namespace DominoCourseWork
             Dealt();
 
         }
-        private void PictureBox_Click(object sender, EventArgs e)
+        public void PictureBox_Click(object sender, EventArgs e)
         {
-            PictureBox pbox = sender as PictureBox;
-            Domino domino = new Domino(pbox.Image);
+            Domino domino;
+            PictureBox pbox;
+            if (sender is PictureBox)
+            {
+                pbox = sender as PictureBox;
+                domino = new Domino(pbox.Image);
+            }
+            else
+            {
+                domino = sender as Domino;
+                pbox = new PictureBox();
+                pbox.Image = domino.Image;
+                Controls.Add(pbox);
+            }
             if (domino.Contains(Right) || domino.Contains(Left) || Right == 7)
             {
 
